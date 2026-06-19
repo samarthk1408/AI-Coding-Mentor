@@ -1,0 +1,120 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0f172a;
+  color: white;
+  font-family: "Segoe UI", sans-serif;
+  min-height: 100vh;
+}
+
+.navbar {
+  background: rgba(15, 23, 42, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #334155;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+
+.nav-link {
+  color: white !important;
+  transition: 0.3s;
+}
+
+.nav-link:hover {
+  color: #38bdf8 !important;
+}
+
+.card {
+  background: #1e293b;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-body {
+  padding: 25px;
+}
+
+.btn-primary {
+  background: #2563eb;
+  border: none;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.btn-success {
+  background: #16a34a;
+  border: none;
+}
+
+.btn-success:hover {
+  background: #15803d;
+}
+
+.btn-danger {
+  border: none;
+}
+
+.form-control,
+.form-select,
+textarea {
+  background: #334155 !important;
+  color: white !important;
+  border: 1px solid #475569 !important;
+}
+
+.form-control::placeholder,
+textarea::placeholder {
+  color: #cbd5e1;
+}
+
+.form-control:focus,
+.form-select:focus,
+textarea:focus {
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 10px #38bdf8;
+}
+
+.dashboard-card {
+  text-align: center;
+  padding: 30px;
+}
+
+.dashboard-number {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #38bdf8;
+}
+
+.hero-section {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.hero-subtitle {
+  color: #94a3b8;
+  margin-top: 15px;
+}
+
+pre {
+  border-radius: 12px;
+}
