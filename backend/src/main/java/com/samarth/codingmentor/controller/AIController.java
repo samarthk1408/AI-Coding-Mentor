@@ -3,6 +3,7 @@ package com.samarth.codingmentor.controller;
 import com.samarth.codingmentor.dto.AIRequest;
 import com.samarth.codingmentor.dto.AIResponse;
 import com.samarth.codingmentor.dto.CodeReviewRequest;
+import com.samarth.codingmentor.dto.InterviewRequest;
 import com.samarth.codingmentor.service.AIService;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,8 +29,43 @@ public class AIController {
         return new AIResponse(guidance);
     }
 
-    @PostMapping("/review")
+    @PostMapping("/visualize")
+    public AIResponse visualizeProblem(
+            @RequestBody AIRequest request) {
 
+        String visualization =
+                aiService.visualizeProblem(
+                        request.getProblem());
+
+        return new AIResponse(
+                visualization
+        );
+    }
+
+    @PostMapping("/interview/question")
+    public AIResponse interviewQuestion(
+            @RequestBody AIRequest request) {
+
+        String question =
+                aiService.generateInterviewQuestion(
+                        request.getProblem());
+
+        return new AIResponse(question);
+    }
+
+    @PostMapping("/interview/evaluate")
+    public AIResponse evaluateInterview(
+            @RequestBody InterviewRequest request) {
+
+        String feedback =
+                aiService.evaluateInterviewAnswer(
+                        request.getQuestion(),
+                        request.getAnswer());
+
+        return new AIResponse(feedback);
+    }
+
+    @PostMapping("/review")
     public AIResponse reviewCode(
             @RequestBody CodeReviewRequest request) {
 
@@ -40,6 +76,7 @@ public class AIController {
 
         return new AIResponse(review);
     }
+
     @PostMapping("/correct")
     public AIResponse correctCode(
             @RequestBody CodeReviewRequest request) {
@@ -47,11 +84,22 @@ public class AIController {
         String correctedCode =
                 aiService.generateCorrectCode(
                         request.getLanguage(),
-                        request.getCode()
-                );
+                        request.getCode());
 
         return new AIResponse(
                 correctedCode
         );
+    }
+    @PostMapping("/run")
+    public AIResponse runCode(
+            @RequestBody CodeReviewRequest request) {
+
+        String output =
+                aiService.predictOutput(
+                        request.getLanguage(),
+                        request.getCode()
+                );
+
+        return new AIResponse(output);
     }
 }

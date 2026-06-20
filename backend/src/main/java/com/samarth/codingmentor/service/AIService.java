@@ -16,6 +16,91 @@ public class AIService {
     @Value("${gemini.api.key}")
     private String apiKey;
 
+    private String askGemini(String prompt) {
+
+        String[] models = {
+                "gemini-2.5-flash",
+                "gemini-2.0-flash"
+        };
+
+        for (String model : models) {
+
+            for (int attempt = 1; attempt <= 2; attempt++) {
+
+                try {
+
+                    String url =
+                            "https://generativelanguage.googleapis.com/v1beta/models/"
+                                    + model
+                                    + ":generateContent?key="
+                                    + apiKey;
+
+                    RestTemplate restTemplate =
+                            new RestTemplate();
+
+                    Map<String, Object> requestBody =
+                            Map.of(
+                                    "contents",
+                                    List.of(
+                                            Map.of(
+                                                    "parts",
+                                                    List.of(
+                                                            Map.of(
+                                                                    "text",
+                                                                    prompt
+                                                            )
+                                                    )
+                                            )
+                                    )
+                            );
+
+                    HttpHeaders headers =
+                            new HttpHeaders();
+
+                    headers.setContentType(
+                            MediaType.APPLICATION_JSON
+                    );
+
+                    HttpEntity<Map<String, Object>> request =
+                            new HttpEntity<>(
+                                    requestBody,
+                                    headers
+                            );
+
+                    ResponseEntity<String> response =
+                            restTemplate.exchange(
+                                    url,
+                                    HttpMethod.POST,
+                                    request,
+                                    String.class
+                            );
+
+                    ObjectMapper mapper =
+                            new ObjectMapper();
+
+                    JsonNode root =
+                            mapper.readTree(
+                                    response.getBody()
+                            );
+
+                    return root
+                            .path("candidates")
+                            .get(0)
+                            .path("content")
+                            .path("parts")
+                            .get(0)
+                            .path("text")
+                            .asText();
+
+                } catch (Exception ignored) {
+
+                }
+            }
+        }
+
+        return "AI Service Unavailable";
+    }
+
     public String generateGuidance(String problem) {
 
         String[] models = {
@@ -186,7 +271,7 @@ Code:
 """
                 .formatted(language, code);
 
-        return generateGuidance(prompt);
+        return askGemini(prompt);
     }
     public String generateCorrectCode(
             String language,
@@ -216,6 +301,138 @@ Code:
                         code
                 );
 
-        return generateGuidance(prompt);
+        return askGemini(prompt);
+    }
+    public String visualizeProblem(
+            String problem) {
+
+        String prompt = """
+            You are a coding mentor.
+
+            Analyze this coding problem:
+
+            %s
+
+            Return in this format:
+
+            📂 Problem Type
+            - Array / String / Tree / Graph / DP etc.
+
+            📊 Visualization
+            - Show a simple visual representation
+
+            ▶ Dry Run
+            - Step 1
+            - Step 2
+            - Step 3
+
+            💡 Key Observation
+            - One important insight
+
+            Keep it beginner friendly.
+            """
+                .formatted(problem);
+
+        return askGemini(prompt);
+    }
+    public String generateInterviewQuestion(
+            String topic) {
+
+        String prompt = """
+        You are a technical interviewer.
+
+        Generate ONE interview question on:
+
+        %s
+
+        Rules:
+        - Return ONLY the question
+        - No hints
+        - No approach
+        - No complexity
+        - No explanation
+        - Suitable for freshers
+
+        Example output:
+
+        • What is the difference between ArrayList and LinkedList?
+        """
+                .formatted(topic);
+
+        return askGemini(prompt);
+    }
+    public String evaluateInterviewAnswer(
+            String question,
+            String answer) {
+
+        String prompt = """
+            You are a technical interviewer.
+
+            Question:
+            %s
+
+            Candidate Answer:
+            %s
+
+            Evaluate the answer.
+
+            Rules:
+            - Keep response concise
+            - Use bullet points
+            - No emojis
+            - No long paragraphs
+
+            Format:
+
+            Score: X/10
+
+            Correct:
+            • point
+            • point
+
+            Missing:
+            • point
+            • point
+
+            Ideal Answer:
+            • point
+            • point
+            """
+                .formatted(
+                        question,
+                        answer
+                );
+
+        return askGemini(prompt);
+    }
+    public String predictOutput(
+            String language,
+            String code) {
+
+        String prompt = """
+            You are a compiler and programming expert.
+
+            Analyze this %s code.
+
+            Rules:
+            - Predict the output.
+            - If there is a compilation error,
+              show the error.
+            - If there is a runtime error,
+              show the error.
+            - If there is a logical mistake,
+              explain briefly.
+            - Return only the result.
+
+            Code:
+
+            %s
+            """
+                .formatted(
+                        language,
+                        code
+                );
+
+        return askGemini(prompt);
     }
 }

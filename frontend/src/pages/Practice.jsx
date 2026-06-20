@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Editor from "@monaco-editor/react";
 import axios from "axios";
 
 function Practice() {
@@ -8,6 +9,7 @@ function Practice() {
 
     const [review, setReview] = useState("");
     const [correctedCode, setCorrectedCode] = useState("");
+    const [output, setOutput] = useState("");
 
     const [loadingReview, setLoadingReview] = useState(false);
     const [loadingCorrect, setLoadingCorrect] = useState(false);
@@ -63,11 +65,14 @@ function Practice() {
                 }
             );
 
-            setCorrectedCode(response.data.guidance);
+            setCorrectedCode(
+                response.data.guidance
+            );
 
         } catch (error) {
 
             console.error(error);
+
             setCorrectedCode(
                 "Unable to generate corrected code."
             );
@@ -77,17 +82,56 @@ function Practice() {
             setLoadingCorrect(false);
         }
     };
+const runCode = async () => {
+
+    if (!code.trim()) {
+
+        alert("Please write some code first.");
+        return;
+    }
+
+    try {
+
+        const response =
+            await axios.post(
+                "http://localhost:8080/api/ai/run",
+                {
+                    language,
+                    code
+                }
+            );
+
+        setOutput(
+            response.data.guidance
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        setOutput(
+            "Failed to execute code."
+        );
+    }
+};
+
+
+
+
 
     const clearAll = () => {
 
         setCode("");
         setReview("");
         setCorrectedCode("");
+        setOutput("");
     };
 
     const copyCode = () => {
 
-        navigator.clipboard.writeText(correctedCode);
+        navigator.clipboard.writeText(
+            correctedCode
+        );
 
         alert("Code copied successfully!");
     };
@@ -112,7 +156,9 @@ function Practice() {
                         className="form-select mb-3"
                         value={language}
                         onChange={(e) =>
-                            setLanguage(e.target.value)
+                            setLanguage(
+                                e.target.value
+                            )
                         }
                     >
                         <option>Java</option>
@@ -124,13 +170,13 @@ function Practice() {
                         Write Your Code
                     </label>
 
-                    <textarea
-                        className="form-control"
-                        rows="18"
+                    <Editor
+                        height="500px"
+                        theme="vs-dark"
+                        language={language.toLowerCase()}
                         value={code}
-                        placeholder="Write code here..."
-                        onChange={(e) =>
-                            setCode(e.target.value)
+                        onChange={(value) =>
+                            setCode(value || "")
                         }
                     />
 
@@ -159,6 +205,13 @@ function Practice() {
                         </button>
 
                         <button
+                            className="btn btn-warning me-2"
+                            onClick={runCode}
+                        >
+                            ▶ Run Code
+                        </button>
+
+                        <button
                             className="btn btn-secondary"
                             onClick={clearAll}
                         >
@@ -170,6 +223,31 @@ function Practice() {
                 </div>
 
             </div>
+
+            {output && (
+
+                <div className="card shadow mt-4">
+
+                    <div className="card-body">
+
+                        <h3>
+                            ▶ Output
+                        </h3>
+
+                        <pre
+                            className="bg-dark text-light p-3 rounded"
+                            style={{
+                                whiteSpace: "pre-wrap"
+                            }}
+                        >
+                            {output}
+                        </pre>
+
+                    </div>
+
+                </div>
+
+            )}
 
             {review && (
 

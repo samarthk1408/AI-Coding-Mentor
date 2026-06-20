@@ -13,6 +13,7 @@ import Practice from "./pages/Practice";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import Interview from "./pages/Interview";
 
 function App() {
 
@@ -73,6 +74,12 @@ function App() {
                                     to="/practice"
                                 >
                                     Practice
+                                </Link>
+                                <Link
+                                    className="nav-link"
+                                    to="/interview"
+                                >
+                                    Interview
                                 </Link>
 
                                 <button
@@ -159,6 +166,14 @@ function App() {
                     element={
                         isLoggedIn
                             ? <Practice />
+                            : <Navigate to="/login" />
+                    }
+                />
+                <Route
+                    path="/interview"
+                    element={
+                        isLoggedIn
+                            ? <Interview />
                             : <Navigate to="/login" />
                     }
                 />

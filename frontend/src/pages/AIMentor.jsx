@@ -5,6 +5,7 @@ function AIMentor() {
 
     const [problem, setProblem] = useState("");
     const [guidance, setGuidance] = useState("");
+    const [visualization, setVisualization] = useState("");
     const [loading, setLoading] = useState(false);
 
     const getGuidance = async () => {
@@ -25,7 +26,9 @@ function AIMentor() {
                 }
             );
 
-            setGuidance(response.data.guidance);
+            setGuidance(
+                response.data.guidance
+            );
 
         } catch (error) {
 
@@ -38,12 +41,44 @@ function AIMentor() {
         }
     };
 
+    const getVisualization = async () => {
+
+        if (!problem.trim()) {
+            alert("Please enter a coding problem.");
+            return;
+        }
+
+        try {
+
+            const response = await axios.post(
+                "http://localhost:8080/api/ai/visualize",
+                {
+                    problem: problem
+                }
+            );
+
+            setVisualization(
+                response.data.guidance
+            );
+
+        } catch (error) {
+
+            console.error(error);
+            alert(
+                "Failed to generate visualization."
+            );
+        }
+    };
+
     const clearAll = () => {
+
         setProblem("");
         setGuidance("");
+        setVisualization("");
     };
 
     return (
+
         <div className="container mt-5">
 
             <h1 className="text-center mb-4">
@@ -64,7 +99,9 @@ function AIMentor() {
                         placeholder="Paste your coding problem here..."
                         value={problem}
                         onChange={(e) =>
-                            setProblem(e.target.value)
+                            setProblem(
+                                e.target.value
+                            )
                         }
                     />
 
@@ -76,7 +113,14 @@ function AIMentor() {
                         >
                             {loading
                                 ? "Generating..."
-                                : "Get AI Guidance"}
+                                : "🤖 Get AI Guidance"}
+                        </button>
+
+                        <button
+                            className="btn btn-info me-2"
+                            onClick={getVisualization}
+                        >
+                            📊 Visualize Problem
                         </button>
 
                         <button
@@ -94,12 +138,12 @@ function AIMentor() {
 
             {guidance && (
 
-                <div className="card shadow mt-4">
+                <div className="card shadow mt-4 border-primary">
 
                     <div className="card-body">
 
                         <h3>
-                            AI Guidance
+                            🤖 AI Guidance
                         </h3>
 
                         <pre
@@ -117,7 +161,33 @@ function AIMentor() {
 
             )}
 
+            {visualization && (
+
+                <div className="card shadow mt-4 border-info">
+
+                    <div className="card-body">
+
+                        <h3>
+                            📊 Problem Visualization
+                        </h3>
+
+                        <pre
+                            style={{
+                                whiteSpace: "pre-wrap",
+                                fontFamily: "inherit"
+                            }}
+                        >
+                            {visualization}
+                        </pre>
+
+                    </div>
+
+                </div>
+
+            )}
+
         </div>
+
     );
 }
 

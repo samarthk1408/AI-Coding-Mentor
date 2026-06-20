@@ -11,6 +11,12 @@ function ProblemDetails() {
     const [aiGuidance, setAiGuidance] = useState("");
     const [loadingAI, setLoadingAI] = useState(false);
 
+    const [showVisualization, setShowVisualization] =
+        useState(false);
+
+    const [visualization, setVisualization] =
+        useState("");
+
     useEffect(() => {
 
         axios
@@ -19,7 +25,10 @@ function ProblemDetails() {
                 setProblem(response.data);
             })
             .catch((error) => {
-                console.error("Error loading problem:", error);
+                console.error(
+                    "Error loading problem:",
+                    error
+                );
             });
 
     }, [id]);
@@ -49,12 +58,18 @@ ${problem.hint}
                 }
             );
 
-            setAiGuidance(response.data.guidance);
+            setAiGuidance(
+                response.data.guidance
+            );
+
             setShowAI(true);
 
         } catch (error) {
 
-            console.error("AI Error:", error);
+            console.error(
+                "AI Error:",
+                error
+            );
 
         } finally {
 
@@ -63,7 +78,46 @@ ${problem.hint}
         }
     };
 
+    const getVisualization = async () => {
+
+        try {
+
+            const response = await axios.post(
+                "http://localhost:8080/api/ai/visualize",
+                {
+                    problem: `
+Title: ${problem.title}
+
+Difficulty: ${problem.difficulty}
+
+Topic: ${problem.topic}
+
+Description:
+${problem.description}
+
+Hint:
+${problem.hint}
+                    `
+                }
+            );
+
+            setVisualization(
+                response.data.guidance
+            );
+
+            setShowVisualization(true);
+
+        } catch (error) {
+
+            console.error(
+                "Visualization Error:",
+                error
+            );
+        }
+    };
+
     if (!problem) {
+
         return (
             <div className="container mt-5">
                 <h3>Loading...</h3>
@@ -72,7 +126,9 @@ ${problem.hint}
     }
 
     const getDifficultyBadge = () => {
+
         switch (problem.difficulty) {
+
             case "Easy":
                 return "bg-success";
 
@@ -88,6 +144,7 @@ ${problem.hint}
     };
 
     return (
+
         <div className="container mt-5">
 
             <div className="card shadow border-0">
@@ -126,14 +183,25 @@ ${problem.hint}
                             "No hint available."}
                     </div>
 
-                    <button
-                        className="btn btn-primary"
-                        onClick={getAIGuidance}
-                    >
-                        {loadingAI
-                            ? "Loading..."
-                            : "Get AI Guidance"}
-                    </button>
+                    <div className="mt-3">
+
+                        <button
+                            className="btn btn-primary me-2"
+                            onClick={getAIGuidance}
+                        >
+                            {loadingAI
+                                ? "Loading..."
+                                : "🤖 AI Guidance"}
+                        </button>
+
+                        <button
+                            className="btn btn-info"
+                            onClick={getVisualization}
+                        >
+                            📊 Visualize Problem
+                        </button>
+
+                    </div>
 
                     {showAI && (
 
@@ -164,11 +232,41 @@ ${problem.hint}
 
                     )}
 
+                    {showVisualization && (
+
+                        <div className="mt-4">
+
+                            <div className="card border-info">
+
+                                <div className="card-body">
+
+                                    <h4>
+                                        📊 Problem Visualization
+                                    </h4>
+
+                                    <pre
+                                        style={{
+                                            whiteSpace: "pre-wrap",
+                                            fontFamily: "inherit"
+                                        }}
+                                    >
+                                        {visualization}
+                                    </pre>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    )}
+
                 </div>
 
             </div>
 
         </div>
+
     );
 }
 
