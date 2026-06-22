@@ -13,7 +13,7 @@ import java.util.Map;
 @Service
 public class AIService {
 
-    @Value("${gemini.api.key}")
+    @Value("${GEMINI_API_KEY}")
     private String apiKey;
 
     private String askGemini(String prompt) {
