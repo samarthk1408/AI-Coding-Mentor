@@ -15,6 +15,8 @@ public class AIService {
 
     @Value("${GEMINI_API_KEY}")
     private String apiKey;
+    @Value("${GROQ_API_KEY}")
+    private String groqApiKey;
 
     private String askGemini(String prompt) {
 
@@ -98,7 +100,84 @@ public class AIService {
             }
         }
 
-        return "AI Service Unavailable";
+        System.out.println(
+                "Gemini failed. Switching to Groq..."
+        );
+
+        return askGroq(prompt);
+    }private String askGroq(String prompt) {
+
+        try {
+
+            String url =
+                    "https://api.groq.com/openai/v1/chat/completions";
+
+            RestTemplate restTemplate =
+                    new RestTemplate();
+
+            HttpHeaders headers =
+                    new HttpHeaders();
+
+            headers.setContentType(
+                    MediaType.APPLICATION_JSON
+            );
+
+            headers.setBearerAuth(
+                    groqApiKey
+            );
+
+            Map<String, Object> requestBody =
+                    Map.of(
+                            "model",
+                            "llama-3.3-70b-versatile",
+                            "messages",
+                            List.of(
+                                    Map.of(
+                                            "role",
+                                            "user",
+                                            "content",
+                                            prompt
+                                    )
+                            )
+                    );
+
+            HttpEntity<Map<String, Object>> request =
+                    new HttpEntity<>(
+                            requestBody,
+                            headers
+                    );
+
+            ResponseEntity<String> response =
+                    restTemplate.exchange(
+                            url,
+                            HttpMethod.POST,
+                            request,
+                            String.class
+                    );
+
+            ObjectMapper mapper =
+                    new ObjectMapper();
+
+            JsonNode root =
+                    mapper.readTree(
+                            response.getBody()
+                    );
+
+            return root
+                    .path("choices")
+                    .get(0)
+                    .path("message")
+                    .path("content")
+                    .asText();
+
+        } catch (Exception e) {
+
+            System.out.println(
+                    "Groq also failed"
+            );
+
+            return "AI Service Unavailable";
+        }
     }
 
     public String generateGuidance(String problem) {
