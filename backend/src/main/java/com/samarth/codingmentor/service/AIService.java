@@ -131,29 +131,39 @@ public class AIService {
                             new RestTemplate();
 
                     String prompt = """
-                            You are a friendly coding mentor.
+        You are a friendly coding mentor.
 
-                            Analyze this coding problem:
+        Analyze this coding problem:
 
-                            %s
+        %s
 
-                            Give the answer in this format:
+        Give the answer in this format:
 
-                            🎯 Approach
-                            • point
-                            • point
+        🎯 Approach
+        • Explain the approach step by step
 
-                            💡 Hint
-                            • point
-                            • point
+        💡 Hint
+        • Give useful hints
 
-                            📈 Complexity
-                            • Time: O(...)
-                            • Space: O(...)
+        📈 Complexity
+        • Time: O(...)
+        • Space: O(...)
 
-                            Keep the explanation short and beginner friendly.
-                            Avoid long paragraphs.
-                            """
+        ⚠️ Edge Cases
+        • Mention important edge cases
+
+        💻 Java Solution
+
+        ```java
+        // Complete working code
+        ```
+
+        Rules:
+        - Keep explanations short and beginner friendly.
+        - Provide a complete Java solution.
+        - Use proper formatting.
+        - Return only the answer in the above format.
+        """
                             .formatted(problem);
 
                     Map<String, Object> requestBody =
@@ -339,24 +349,41 @@ Code:
             String topic) {
 
         String prompt = """
-        You are a technical interviewer.
+    You are a senior technical interviewer.
 
-        Generate ONE interview question on:
+    Generate 10 UNIQUE interview questions on:
 
-        %s
+    %s
 
-        Rules:
-        - Return ONLY the question
-        - No hints
-        - No approach
-        - No complexity
-        - No explanation
-        - Suitable for freshers
+    Rules:
+    - Suitable for freshers and placement preparation.
+    - Mix theory and coding questions.
+    - Questions should not repeat.
+    - Cover different concepts.
+    - Number every question.
 
-        Example output:
+    Return ONLY in this format:
 
-        • What is the difference between ArrayList and LinkedList?
-        """
+    1. Question one
+
+    2. Question two
+
+    3. Question three
+
+    4. Question four
+
+    5. Question five
+
+    6. Question six
+
+    7. Question seven
+
+    8. Question eight
+
+    9. Question nine
+
+    10. Question ten
+    """
                 .formatted(topic);
 
         return askGemini(prompt);

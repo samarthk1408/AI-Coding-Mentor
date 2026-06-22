@@ -9,6 +9,12 @@ function Interview() {
     const [question, setQuestion] =
         useState("");
 
+    const [questions, setQuestions] =
+        useState([]);
+
+    const [currentQuestion, setCurrentQuestion] =
+        useState(0);
+
     const [answer, setAnswer] =
         useState("");
 
@@ -26,8 +32,21 @@ function Interview() {
                 }
             );
 
-            setQuestion(
+            const generatedQuestions =
                 response.data.guidance
+                    .split(/\d+\./)
+                    .filter(
+                        q => q.trim() !== ""
+                    );
+
+            setQuestions(
+                generatedQuestions
+            );
+
+            setCurrentQuestion(0);
+
+            setQuestion(
+                generatedQuestions[0]
             );
 
             setFeedback("");
@@ -38,7 +57,7 @@ function Interview() {
             console.error(error);
 
             alert(
-                "Failed to generate question"
+                "Failed to generate questions"
             );
         }
     };
@@ -65,6 +84,34 @@ function Interview() {
 
             alert(
                 "Failed to evaluate answer"
+            );
+        }
+    };
+
+    const nextQuestion = () => {
+
+        if (
+            currentQuestion <
+            questions.length - 1
+        ) {
+
+            setCurrentQuestion(
+                currentQuestion + 1
+            );
+
+            setQuestion(
+                questions[
+                    currentQuestion + 1
+                ]
+            );
+
+            setAnswer("");
+            setFeedback("");
+        }
+        else {
+
+            alert(
+                "🎉 Interview Completed!"
             );
         }
     };
@@ -118,7 +165,9 @@ function Interview() {
                     <div className="card-body">
 
                         <h4>
-                            Question
+                            Question {currentQuestion + 1}
+                            {" / "}
+                            {questions.length}
                         </h4>
 
                         <p>
@@ -138,10 +187,17 @@ function Interview() {
                         />
 
                         <button
-                            className="btn btn-success mt-3"
+                            className="btn btn-success mt-3 me-2"
                             onClick={submitAnswer}
                         >
                             Submit Answer
+                        </button>
+
+                        <button
+                            className="btn btn-warning mt-3"
+                            onClick={nextQuestion}
+                        >
+                            Next Question
                         </button>
 
                     </div>
