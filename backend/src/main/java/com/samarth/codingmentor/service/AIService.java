@@ -453,15 +453,7 @@ Code:
 
     5. Question five
 
-    6. Question six
-
-    7. Question seven
-
-    8. Question eight
-
-    9. Question nine
-
-    10. Question ten
+   
     """
                 .formatted(topic);
 
