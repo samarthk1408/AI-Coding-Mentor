@@ -351,7 +351,7 @@ Code:
         String prompt = """
     You are a senior technical interviewer.
 
-    Generate 10 UNIQUE interview questions on:
+    Generate 5 UNIQUE interview questions on:
 
     %s
 
