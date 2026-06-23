@@ -1,11 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 function AIMentor() {
 
-    const [problem, setProblem] = useState("");
-    const [guidance, setGuidance] = useState("");
-    const [visualization, setVisualization] = useState("");
+    const [problem, setProblem] = useState(
+        localStorage.getItem("problem") || ""
+    );
+   const [guidance, setGuidance] = useState(
+       localStorage.getItem("guidance") || ""
+   );
+   useEffect(() => {
+       localStorage.setItem("problem", problem);
+   }, [problem]);
+
+   useEffect(() => {
+       localStorage.setItem("guidance", guidance);
+   }, [guidance]);
+   const [visualization, setVisualization] = useState(
+       localStorage.getItem("visualization") || ""
+   );
     const [loading, setLoading] = useState(false);
 
     const getGuidance = async () => {
@@ -71,6 +84,9 @@ function AIMentor() {
     };
 
     const clearAll = () => {
+
+        localStorage.removeItem("problem");
+        localStorage.removeItem("guidance");
 
         setProblem("");
         setGuidance("");
