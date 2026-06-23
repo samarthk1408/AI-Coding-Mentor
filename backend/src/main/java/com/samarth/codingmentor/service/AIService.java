@@ -365,28 +365,23 @@ Code:
             String code) {
 
         String prompt = """
-            You are an expert programming mentor.
+You are an expert %s programmer.
 
-            Correct and improve this %s code.
+Fix all errors in the following code.
 
-            Rules:
-            - Fix bugs
-            - Improve formatting
-            - Improve readability
-            - Use best practices
-            - Add comments if useful
+Return ONLY the corrected code.
 
-            Return ONLY the corrected code.
-            Do not explain anything.
+Rules:
+- No explanations.
+- No comments.
+- No markdown.
+- No code fences.
+- Output only the final corrected code.
 
-            Code:
+Code:
 
-            %s
-            """
-                .formatted(
-                        language,
-                        code
-                );
+%s
+""".formatted(language, code);
 
         return askGemini(prompt);
     }
