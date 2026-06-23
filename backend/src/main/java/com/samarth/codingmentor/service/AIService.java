@@ -306,9 +306,7 @@ public class AIService {
                                     + model
                     );
 
-                    System.out.println(
-                            e.getMessage()
-                    );
+                    e.printStackTrace();
 
                     try {
                         Thread.sleep(2000);
