@@ -4,7 +4,7 @@ import com.samarth.codingmentor.dto.RunCodeRequest;
 import com.samarth.codingmentor.service.CodeExecutionService;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:5173")
+
 @RestController
 @RequestMapping("/api/code")
 public class CodeExecutionController {

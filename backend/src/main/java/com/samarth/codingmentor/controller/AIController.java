@@ -7,10 +7,7 @@ import com.samarth.codingmentor.dto.InterviewRequest;
 import com.samarth.codingmentor.service.AIService;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = {
-        "http://localhost:5173",
-        "https://ai-coding-mentor-phi.vercel.app"
-})
+
 @RestController
 @RequestMapping("/api/ai")
 public class AIController {

@@ -4,10 +4,7 @@ import com.samarth.codingmentor.dto.LoginRequest;
 import com.samarth.codingmentor.dto.RegisterRequest;
 import com.samarth.codingmentor.service.AuthService;
 import org.springframework.web.bind.annotation.*;
-@CrossOrigin(origins = {
-        "http://localhost:5173",
-        "https://ai-coding-mentor-ubst.vercel.app"
-})
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
