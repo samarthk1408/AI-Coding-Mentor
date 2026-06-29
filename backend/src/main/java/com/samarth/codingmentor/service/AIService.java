@@ -13,10 +13,12 @@ import java.util.Map;
 @Service
 public class AIService {
 
-    @Value("${GEMINI_API_KEY}")
+    @Value("${GEMINI_API_KEY:dummy}")
     private String apiKey;
-    @Value("${GROQ_API_KEY}")
+
+    @Value("${GROQ_API_KEY:dummy}")
     private String groqApiKey;
+
 
     private String askGemini(String prompt) {
 
