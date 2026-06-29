@@ -1,156 +1,331 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+
+import {
+    Box,
+    Card,
+    CardContent,
+    Typography,
+    Button,
+    Avatar,
+    Stack,
+    Chip,
+    Grid
+} from "@mui/material";
+
+import {
+    SmartToy,
+    ArrowForward,
+    AutoAwesome,
+    Terminal,
+    School,
+    Timeline,
+    ArrowOutward
+} from "@mui/icons-material";
 
 function Dashboard() {
 
-    const [solvedCount, setSolvedCount] =
-        useState(0);
+    const navigate = useNavigate();
 
     const userEmail =
         localStorage.getItem("userEmail");
 
-    useEffect(() => {
+    const featureCards = [
 
-        axios
-            .get(
-                "https://p01--ai-coding-mentor--ddgq69l8mqk5.code.run/api/progress/count/1"
-            )
-            .then((response) => {
+        {
+            title: "AI Mentor",
+            desc: "Generate AI Guidance",
+            color: "#2563EB",
+            icon: <AutoAwesome sx={{ fontSize: 45 }} />,
+            route: "/ai"
+        },
 
-                setSolvedCount(
-                    response.data
-                );
-            })
-            .catch((error) => {
+        {
+            title: "Practice",
+            desc: "Solve Coding Problems",
+            color: "#10B981",
+            icon: <Terminal sx={{ fontSize: 45 }} />,
+            route: "/practice"
+        },
 
-                console.error(error);
-            });
+        {
+            title: "Interview",
+            desc: "Mock Interview",
+            color: "#8B5CF6",
+            icon: <School sx={{ fontSize: 45 }} />,
+            route: "/interview"
+        },
 
-    }, []);
+        {
+            title: "DSA Roadmap",
+            desc: "Master Data Structures",
+            color: "#F59E0B",
+            icon: <Timeline sx={{ fontSize: 45 }} />,
+            route: "/roadmap"
+        }
+
+    ];
 
     return (
 
-        <div className="container mt-5">
+        <Box
+            sx={{
+                minHeight: "100vh",
+                background:
+                    "linear-gradient(135deg,#081321,#111827,#1E293B)",
+                p: 5
+            }}
+        >
 
-            {/* Welcome Section */}
+            <motion.div
+                initial={{ opacity: 0, y: -30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: .6 }}
+            >
 
-            <div className="mb-5">
+                <Card
+                    sx={{
+                        background:
+                            "linear-gradient(135deg,#2563EB,#7C3AED)",
+                        color: "white",
+                        borderRadius: 5,
+                        mb: 5,
+                        boxShadow:
+                            "0 20px 50px rgba(37,99,235,.45)"
+                    }}
+                >
 
-                <h1 className="fw-bold">
-                    👋 Welcome Back
-                </h1>
+                    <CardContent sx={{ p: 5 }}>
 
-                <p className="text-secondary">
-                    Logged in as:
-                    <strong>
-                        {" "}
-                        {userEmail}
-                    </strong>
-                </p>
+                        <Stack
+                            direction="row"
+                            justifyContent="space-between"
+                            alignItems="center"
+                        >
 
-            </div>
+                            <Box>
 
-            {/* Statistics Cards */}
+                                <Chip
+                                    label="AI Powered"
+                                    sx={{
+                                        background:
+                                            "rgba(255,255,255,.2)",
+                                        color: "white",
+                                        mb: 2
+                                    }}
+                                />
 
-            <div className="row">
+                                <Typography
+                                    variant="h3"
+                                    fontWeight="bold"
+                                >
+                                    Welcome Back
+                                </Typography>
 
-                <div className="col-md-4 mb-4">
+                                <Typography
+                                    variant="h6"
+                                    mt={2}
+                                >
+                                    {userEmail}
+                                </Typography>
 
-                    <div className="card shadow dashboard-card">
+                                <Typography
+                                    mt={3}
+                                    sx={{
+                                        maxWidth: 600,
+                                        opacity: .9
+                                    }}
+                                >
+                                    Master Coding with Artificial Intelligence.
+                                    Practice coding, prepare for interviews and
+                                    improve your problem-solving skills.
+                                </Typography>
 
-                        <div className="card-body">
+                                <Button
+                                    variant="contained"
+                                    endIcon={<ArrowForward />}
+                                    onClick={() => navigate("/practice")}
+                                    sx={{
+                                        mt: 4,
+                                        background: "white",
+                                        color: "#2563EB",
+                                        fontWeight: "bold",
+                                        textTransform: "none"
+                                    }}
+                                >
+                                    Start Practicing
+                                </Button>
 
-                            <h2>
-                                🏆
-                            </h2>
+                            </Box>
 
-                            <h5>
-                                Problems Solved
-                            </h5>
+                            <Avatar
+                                sx={{
+                                    width: 140,
+                                    height: 140,
+                                    background:
+                                        "rgba(255,255,255,.15)"
+                                }}
+                            >
+                                <SmartToy
+                                    sx={{
+                                        fontSize: 80
+                                    }}
+                                />
+                            </Avatar>
 
-                            <div className="dashboard-number">
-                                {solvedCount}
-                            </div>
+                        </Stack>
 
-                        </div>
+                    </CardContent>
 
-                    </div>
+                </Card>
+                <Typography
+                    variant="h4"
+                    fontWeight="bold"
+                    color="white"
+                    mb={3}
+                >
+                    Quick Access
+                </Typography>
 
-                </div>
+                <Grid container spacing={3}>
 
-                <div className="col-md-4 mb-4">
+                    {featureCards.map((item, index) => (
 
-                    <div className="card shadow dashboard-card">
+                        <Grid
+                            item
+                            xs={12}
+                            md={6}
+                            lg={3}
+                            key={index}
+                        >
 
-                        <div className="card-body">
+                            <motion.div
+                                whileHover={{
+                                    scale: 1.04,
+                                    y: -8
+                                }}
+                            >
 
-                            <h2>
-                                🤖
-                            </h2>
+                                <Card
+                                    onClick={() => navigate(item.route)}
+                                    sx={{
+                                        cursor: "pointer",
+                                        borderRadius: 5,
+                                        color: "white",
+                                        background: `linear-gradient(135deg,${item.color},#1E293B)`,
+                                        transition: ".3s",
+                                        height: 220,
+                                        "&:hover": {
+                                            boxShadow: `0 20px 45px ${item.color}66`
+                                        }
+                                    }}
+                                >
 
-                            <h5>
-                                AI Reviews
-                            </h5>
+                                    <CardContent
+                                        sx={{
+                                            height: "100%",
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            justifyContent: "space-between",
+                                            alignItems: "center",
+                                            textAlign: "center"
+                                        }}
+                                    >
 
-                            <div className="dashboard-number">
-                                0
-                            </div>
+                                        <Box>
+                                            {item.icon}
+                                        </Box>
 
-                        </div>
+                                        <Typography
+                                            variant="h6"
+                                            fontWeight="bold"
+                                        >
+                                            {item.title}
+                                        </Typography>
 
-                    </div>
+                                        <Typography
+                                            sx={{
+                                                opacity: .85
+                                            }}
+                                        >
+                                            {item.desc}
+                                        </Typography>
 
-                </div>
+                                        <Button
+                                            variant="contained"
+                                            endIcon={<ArrowOutward />}
+                                            sx={{
+                                                mt: 2,
+                                                background: "white",
+                                                color: item.color,
+                                                fontWeight: "bold",
+                                                textTransform: "none",
+                                                borderRadius: 3,
+                                                "&:hover": {
+                                                    background: "#F8FAFC"
+                                                }
+                                            }}
+                                        >
+                                            Open
+                                        </Button>
 
-                <div className="col-md-4 mb-4">
+                                    </CardContent>
 
-                    <div className="card shadow dashboard-card">
+                                </Card>
 
-                        <div className="card-body">
+                            </motion.div>
 
-                            <h2>
-                                💻
-                            </h2>
+                        </Grid>
 
-                            <h5>
-                                Practice Sessions
-                            </h5>
+                    ))}
 
-                            <div className="dashboard-number">
-                                0
-                            </div>
+                </Grid>
+                <Box mt={5}>
 
-                        </div>
+                    <Card
+                        sx={{
+                            borderRadius: 5,
+                            background:
+                                "linear-gradient(135deg,#2563EB,#7C3AED)",
+                            color: "white"
+                        }}
+                    >
 
-                    </div>
+                        <CardContent>
 
-                </div>
+                            <Typography
+                                variant="h5"
+                                fontWeight="bold"
+                            >
+                                AI Tip
+                            </Typography>
 
-            </div>
+                            <Typography
+                                mt={2}
+                                sx={{
+                                    opacity: .9,
+                                    lineHeight: 1.8
+                                }}
+                            >
+                                Practice one coding problem every day.
+                                Focus on understanding the logic instead
+                                of memorizing solutions. Consistency and
+                                problem-solving skills will help you crack
+                                coding interviews faster.
+                            </Typography>
 
-            {/* Activity Section */}
+                        </CardContent>
 
-            <div className="card shadow mt-4">
+                    </Card>
 
-                <div className="card-body">
+                </Box>
 
-                    <h4 className="mb-3">
-                        📈 Learning Progress
-                    </h4>
+                </motion.div>
 
-                    <p>
-                        Keep solving problems and using
-                        AI reviews to improve your coding
-                        skills.
-                    </p>
+                </Box>
 
-                </div>
+                );
 
-            </div>
+                }
 
-        </div>
-
-    );
-}
-
-export default Dashboard;
+                export default Dashboard;
