@@ -1,3 +1,14 @@
+import { useState } from "react";
+
+import IconButton from "@mui/material/IconButton";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+
+import MenuIcon from "@mui/icons-material/Menu";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -37,8 +48,26 @@ function Navigation({ isLoggedIn, userEmail, logout }) {
     return null;
 
 }
+const location = window.location.pathname;
+
+const navButtonStyle = (path) => ({
+    color: location === path ? "#38BDF8" : "white",
+    fontWeight: location === path ? 700 : 500,
+    borderBottom:
+        location === path
+            ? "2px solid #38BDF8"
+            : "2px solid transparent",
+    borderRadius: 0,
+    textTransform: "none",
+    transition: "0.3s"
+});
 
 function App() {
+    const [mobileOpen, setMobileOpen] = useState(false);
+
+    const toggleDrawer = () => {
+        setMobileOpen(!mobileOpen);
+    };
 
     const isLoggedIn =
         localStorage.getItem("userEmail");
@@ -66,7 +95,17 @@ function App() {
                     borderBottom: "1px solid rgba(255,255,255,0.08)"
                 }}
             >
-                <Toolbar sx={{ px: 3 }}>
+              <Toolbar
+                  sx={{
+                      px: {
+                          xs: 2,
+                          md: 3
+                      },
+                      py: 1,
+                      display: "flex",
+                      justifyContent: "space-between"
+                  }}
+              >
 
                     <SmartToyIcon
                         sx={{
@@ -78,8 +117,12 @@ function App() {
 <Typography
     component={Link}
     to="/"
-    variant="h5"
+   variant="h6"
     sx={{
+        fontSize:{
+            xs:"1.15rem",
+            md:"1.5rem"
+        },
         flexGrow: 1,
         fontWeight: 700,
         textDecoration: "none",
@@ -93,74 +136,107 @@ function App() {
     AI Coding Mentor
 </Typography>
 
-                    {isLoggedIn ? (
-                        <>
+                   {isLoggedIn ? (
+                   <>
+                   <Box
+                       sx={{
+                           display: {
+                               xs: "none",
+                               md: "flex"
+                           },
+                           alignItems: "center",
+                           gap: 1
+                       }}
+                   >
+                       <Button
+                           component={Link}
+                           to="/"
+                           startIcon={<DashboardIcon />}
+                           sx={navButtonStyle("/")}
+                       >
+                           Home
+                       </Button>
+                           Home
+                       </Button>
 
+                      <Button
+                          component={Link}
+                          to="/ai"
+                          startIcon={<PsychologyIcon />}
+                          sx={navButtonStyle("/ai")}
+                      >
+                           AI Mentor
+                       </Button>
 
+                       <Button
+                           component={Link}
+                           to="/practice"
+                           sx={navButtonStyle("/practice")}
+                           color="inherit"
+                           startIcon={<CodeIcon />}
+                       >
+                           Practice
+                       </Button>
 
-                           <Button
-                               component={Link}
-                               to="/"
-                               color="inherit"
-                               startIcon={<DashboardIcon />}
+                       <Button
+                           component={Link}
+                           to="/interview"
+                           sx={navButtonStyle("/interview")}
+                           color="inherit"
+                           startIcon={<QuizIcon />}
+                       >
+                           Interview
+                       </Button>
+
+                      <Button
+                          component={Link}
+                          to="/roadmap"
+                          sx={navButtonStyle("/roadmap")}
+                           startIcon={<HomeIcon />}
+                       >
+                           Roadmap
+                       </Button>
+
+                       <Tooltip title={userEmail || ""}>
+                           <Avatar
+                               sx={{
+                                   bgcolor:"#3B82F6",
+                                   mx:2
+                               }}
                            >
-                               Home
-                           </Button>
+                               {userEmail?.charAt(0).toUpperCase()}
+                           </Avatar>
+                       </Tooltip>
 
-                            <Button
-                                component={Link}
-                                to="/ai"
-                                color="inherit"
-                                startIcon={<PsychologyIcon />}
-                            >
-                                AI Mentor
-                            </Button>
+                       <Button
+                           variant="contained"
+                           color="error"
+                           startIcon={<LogoutIcon />}
+                           onClick={logout}
+                           sx={{
+                               borderRadius:"12px",
+                               textTransform:"none"
+                           }}
+                       >
+                           Logout
+                       </Button>
+                   </Box>
 
-                            <Button
-                                component={Link}
-                                to="/practice"
-                                color="inherit"
-                                startIcon={<CodeIcon />}
-                            >
-                                Practice
-                            </Button>
+                   <IconButton
+                       color="inherit"
+                       sx={{
+                           display:{
+                               xs:"flex",
+                               md:"none"
+                           }
+                       }}
+                       onClick={toggleDrawer}
+                   >
+                       <MenuIcon/>
+                   </IconButton>
 
-                            <Button
-                                component={Link}
-                                to="/interview"
-                                color="inherit"
-                                startIcon={<QuizIcon />}
-                            >
-                                Interview
-                            </Button>
-
-                            <Tooltip title={userEmail || ""}>
-                                <Avatar
-                                    sx={{
-                                        bgcolor: "#3B82F6",
-                                        ml: 3,
-                                        mr: 2
-                                    }}
-                                >
-                                    {userEmail?.charAt(0).toUpperCase()}
-                                </Avatar>
-                            </Tooltip>
-
-                            <Button
-                                variant="contained"
-                                color="error"
-                                startIcon={<LogoutIcon />}
-                                onClick={logout}
-                                sx={{
-                                    borderRadius: "12px",
-                                    textTransform: "none"
-                                }}
-                            >
-                                Logout
-                            </Button>
-
-                        </>
-                    ) : (
+                   </>
+                   ) : (
                         <>
                             <Button
                                 component={Link}
@@ -187,6 +263,126 @@ function App() {
 
                 </Toolbar>
             </AppBar>
+            <Drawer
+                anchor="right"
+                open={mobileOpen}
+                onClose={toggleDrawer}
+            >
+                <Box
+                    sx={{
+                        width: 260,
+                        bgcolor: "#0F172A",
+                        height: "100%",
+                        color: "white"
+                    }}
+                >
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            p: 2,
+                            fontWeight: "bold",
+                            color: "#38BDF8"
+                        }}
+                    >
+                        AI Coding Mentor
+                    </Typography>
+
+                    <List>
+
+                        <ListItem disablePadding>
+                            <ListItemButton
+                                component={Link}
+                                to="/"
+                                onClick={toggleDrawer}
+                            >
+                                <ListItemIcon>
+                                    <DashboardIcon sx={{ color: "white" }} />
+                                </ListItemIcon>
+
+                                <ListItemText primary="Home" />
+                            </ListItemButton>
+                        </ListItem>
+
+                        <ListItem disablePadding>
+                            <ListItemButton
+                                component={Link}
+                                to="/ai"
+                                onClick={toggleDrawer}
+                            >
+                                <ListItemIcon>
+                                    <PsychologyIcon sx={{ color: "white" }} />
+                                </ListItemIcon>
+
+                                <ListItemText primary="AI Mentor" />
+                            </ListItemButton>
+                        </ListItem>
+
+                        <ListItem disablePadding>
+                            <ListItemButton
+                                component={Link}
+                                to="/practice"
+                                onClick={toggleDrawer}
+                            >
+                                <ListItemIcon>
+                                    <CodeIcon sx={{ color: "white" }} />
+                                </ListItemIcon>
+
+                                <ListItemText primary="Practice" />
+                            </ListItemButton>
+                        </ListItem>
+
+                        <ListItem disablePadding>
+                            <ListItemButton
+                                component={Link}
+                                to="/interview"
+                                onClick={toggleDrawer}
+                            >
+                                <ListItemIcon>
+                                    <QuizIcon sx={{ color: "white" }} />
+                                </ListItemIcon>
+
+                                <ListItemText primary="Interview" />
+                            </ListItemButton>
+                        </ListItem>
+
+                        <ListItem disablePadding>
+                            <ListItemButton
+                                component={Link}
+                                to="/roadmap"
+                                onClick={toggleDrawer}
+                            >
+                                <ListItemIcon>
+                                    <HomeIcon sx={{ color: "white" }} />
+                                </ListItemIcon>
+
+                                <ListItemText primary="DSA Roadmap" />
+                            </ListItemButton>
+                        </ListItem>
+
+                        <ListItem disablePadding>
+                            <ListItemButton
+                                onClick={() => {
+                                    toggleDrawer();
+                                    logout();
+                                }}
+                            >
+                                <ListItemIcon>
+                                    <LogoutIcon sx={{ color: "#EF4444" }} />
+                                </ListItemIcon>
+
+                                <ListItemText
+                                    primary="Logout"
+                                    primaryTypographyProps={{
+                                        color: "#EF4444"
+                                    }}
+                                />
+                            </ListItemButton>
+                        </ListItem>
+
+                    </List>
+
+                </Box>
+            </Drawer>
 
             <Routes>
 
