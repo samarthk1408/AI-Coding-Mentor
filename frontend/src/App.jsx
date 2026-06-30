@@ -48,21 +48,22 @@ function Navigation({ isLoggedIn, userEmail, logout }) {
     return null;
 
 }
-const location = window.location.pathname;
 
-const navButtonStyle = (path) => ({
-    color: location === path ? "#38BDF8" : "white",
-    fontWeight: location === path ? 700 : 500,
-    borderBottom:
-        location === path
-            ? "2px solid #38BDF8"
-            : "2px solid transparent",
-    borderRadius: 0,
-    textTransform: "none",
-    transition: "0.3s"
-});
 
 function App() {
+    const location = window.location.pathname;
+
+    const navButtonStyle = (path) => ({
+        color: location === path ? "#38BDF8" : "white",
+        fontWeight: location === path ? 700 : 500,
+        borderBottom:
+            location === path
+                ? "2px solid #38BDF8"
+                : "2px solid transparent",
+        borderRadius: 0,
+        textTransform: "none",
+        transition: "0.3s"
+    });
     const [mobileOpen, setMobileOpen] = useState(false);
 
     const toggleDrawer = () => {
@@ -154,9 +155,8 @@ function App() {
                            startIcon={<DashboardIcon />}
                            sx={navButtonStyle("/")}
                        >
-                           Home
-                       </Button>
-                           Home
+
+                        Home
                        </Button>
 
                       <Button
