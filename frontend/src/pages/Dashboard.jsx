@@ -1,6 +1,6 @@
+
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
 import {
     Box,
     Card,
@@ -10,9 +10,9 @@ import {
     Avatar,
     Stack,
     Chip,
-    Grid
+    Grid,
+    Divider
 } from "@mui/material";
-
 import {
     SmartToy,
     ArrowForward,
@@ -20,125 +20,214 @@ import {
     Terminal,
     School,
     Timeline,
-    ArrowOutward
+    ArrowOutward,
+    Code,
+    Psychology,
+    TrackChanges
 } from "@mui/icons-material";
 
 function Dashboard() {
-
     const navigate = useNavigate();
-
-    const userEmail =
-        localStorage.getItem("userEmail");
+    const userEmail = localStorage.getItem("userEmail") || "Developer";
 
     const featureCards = [
-
         {
             title: "AI Mentor",
-            desc: "Generate AI Guidance",
-            color: "#2563EB",
-            icon: <AutoAwesome sx={{ fontSize: 45 }} />,
+            desc: "Get step-by-step coding guidance.",
+            detail: "LEARN WITH AI",
+            color: "#8B7CFF",
+            icon: <AutoAwesome />,
             route: "/ai"
         },
-
         {
             title: "Practice",
-            desc: "Solve Coding Problems",
-            color: "#10B981",
-            icon: <Terminal sx={{ fontSize: 45 }} />,
+            desc: "Solve problems and strengthen logic.",
+            detail: "BUILD YOUR SKILLS",
+            color: "#42CFA5",
+            icon: <Terminal />,
             route: "/practice"
         },
-
         {
-            title: "Interview",
-            desc: "Mock Interview",
-            color: "#8B5CF6",
-            icon: <School sx={{ fontSize: 45 }} />,
+            title: "Interview Prep",
+            desc: "Prepare for technical interviews.",
+            detail: "GET INTERVIEW READY",
+            color: "#F5B860",
+            icon: <School />,
             route: "/interview"
         },
-
         {
             title: "DSA Roadmap",
-            desc: "Master Data Structures",
-            color: "#F59E0B",
-            icon: <Timeline sx={{ fontSize: 45 }} />,
+            desc: "Explore data structures and algorithms.",
+            detail: "FOLLOW YOUR PATH",
+            color: "#70B8FF",
+            icon: <Timeline />,
             route: "/roadmap"
         }
-
     ];
 
-    return (
+    const firstName = userEmail.includes("@")
+        ? userEmail.split("@")[0]
+        : userEmail;
 
+    const mutedText = {
+        color: "#929BB5"
+    };
+
+    const cardStyle = {
+        background: "#121A2D",
+        border: "1px solid #242E45",
+        borderRadius: "18px",
+        color: "#F3F4FA",
+        boxShadow: "none"
+    };
+
+    return (
         <Box
             sx={{
                 minHeight: "100vh",
-                background:
-                    "linear-gradient(135deg,#081321,#111827,#1E293B)",
-                p: 5
+                background: "#0B1020",
+                color: "#F3F4FA",
+                p: { xs: 2, sm: 3, md: 5 },
+                boxSizing: "border-box"
             }}
         >
-
-            <motion.div
-                initial={{ opacity: 0, y: -30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: .6 }}
-            >
-
-                <Card
-                    sx={{
-                        background:
-                            "linear-gradient(135deg,#2563EB,#7C3AED)",
-                        color: "white",
-                        borderRadius: 5,
-                        mb: 5,
-                        boxShadow:
-                            "0 20px 50px rgba(37,99,235,.45)"
-                    }}
+            <Box sx={{ maxWidth: 1240, mx: "auto" }}>
+                {/* Top navigation */}
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    spacing={2}
+                    sx={{ mb: 5 }}
                 >
-
-                    <CardContent sx={{ p: 5 }}>
-
-                        <Stack
-                            direction="row"
-                            justifyContent="space-between"
-                            alignItems="center"
+                    <Stack direction="row" alignItems="center" spacing={1.5}>
+                        <Avatar
+                            variant="rounded"
+                            sx={{
+                                bgcolor: "#29234F",
+                                color: "#B8ACFF",
+                                width: 44,
+                                height: 44,
+                                borderRadius: "13px"
+                            }}
                         >
+                            <Code />
+                        </Avatar>
 
-                            <Box>
+                        <Box>
+                            <Typography
+                                sx={{
+                                    fontWeight: 800,
+                                    fontSize: 17,
+                                    letterSpacing: "-.4px"
+                                }}
+                            >
+                                AI Coding Mentor
+                            </Typography>
 
+                            <Typography
+                                sx={{ ...mutedText, fontSize: 11 }}
+                            >
+                                YOUR PERSONAL CODING SPACE
+                            </Typography>
+                        </Box>
+                    </Stack>
+
+                    <Chip
+                        label="● Ready to learn"
+                        sx={{
+                            color: "#BCEEDD",
+                            bgcolor: "#142C2B",
+                            border: "1px solid #28514A",
+                            fontWeight: 600
+                        }}
+                    />
+                </Stack>
+
+                {/* Welcome banner */}
+                <motion.div
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.45 }}
+                >
+                    <Box
+                        sx={{
+                            position: "relative",
+                            overflow: "hidden",
+                            p: { xs: 3, md: 5 },
+                            mb: 5,
+                            borderRadius: "24px",
+                            border: "1px solid #34315F",
+                            background:
+                                "radial-gradient(ellipse at 90% 0%, #353064 0%, transparent 45%), linear-gradient(120deg, #191A38, #171D34)"
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                position: "absolute",
+                                width: 220,
+                                height: 220,
+                                right: -70,
+                                bottom: -120,
+                                borderRadius: "50%",
+                                border: "1px solid #514B82",
+                                pointerEvents: "none"
+                            }}
+                        />
+
+                        <Grid container spacing={3} alignItems="center">
+                            <Grid item xs={12} md={8}>
                                 <Chip
-                                    label="AI Powered"
+                                    icon={<AutoAwesome />}
+                                    label="YOUR AI-POWERED LEARNING SPACE"
                                     sx={{
-                                        background:
-                                            "rgba(255,255,255,.2)",
-                                        color: "white",
-                                        mb: 2
+                                        mb: 2.5,
+                                        bgcolor: "#292650",
+                                        color: "#C8BEFF",
+                                        border: "1px solid #494176",
+                                        fontSize: 10,
+                                        fontWeight: 700,
+                                        letterSpacing: ".6px",
+                                        "& .MuiChip-icon": {
+                                            color: "#B4A7FF"
+                                        }
                                     }}
                                 />
 
                                 <Typography
-                                    variant="h3"
-                                    fontWeight="bold"
-                                >
-                                    Welcome Back
-                                </Typography>
-
-                                <Typography
-                                    variant="h6"
-                                    mt={2}
-                                >
-                                    {userEmail}
-                                </Typography>
-
-                                <Typography
-                                    mt={3}
                                     sx={{
-                                        maxWidth: 600,
-                                        opacity: .9
+                                        fontSize: {
+                                            xs: 31,
+                                            md: 43
+                                        },
+                                        lineHeight: 1.15,
+                                        letterSpacing: "-1.5px",
+                                        fontWeight: 800,
+                                        mb: 1.5
                                     }}
                                 >
-                                    Master Coding with Artificial Intelligence.
-                                    Practice coding, prepare for interviews and
-                                    improve your problem-solving skills.
+                                    Welcome back,
+                                    <br />
+                                    <Box
+                                        component="span"
+                                        sx={{ color: "#A99AFF" }}
+                                    >
+                                        {firstName}.
+                                    </Box>
+                                </Typography>
+
+                                <Typography
+                                    sx={{
+                                        ...mutedText,
+                                        maxWidth: 540,
+                                        lineHeight: 1.9,
+                                        fontSize: 14
+                                    }}
+                                >
+                                    Every great developer starts with one
+                                    problem. Learn concepts, practice coding,
+                                    and prepare for your next challenge at
+                                    your own pace.
                                 </Typography>
 
                                 <Button
@@ -146,186 +235,308 @@ function Dashboard() {
                                     endIcon={<ArrowForward />}
                                     onClick={() => navigate("/practice")}
                                     sx={{
-                                        mt: 4,
-                                        background: "white",
-                                        color: "#2563EB",
-                                        fontWeight: "bold",
-                                        textTransform: "none"
-                                    }}
-                                >
-                                    Start Practicing
-                                </Button>
-
-                            </Box>
-
-                            <Avatar
-                                sx={{
-                                    width: 140,
-                                    height: 140,
-                                    background:
-                                        "rgba(255,255,255,.15)"
-                                }}
-                            >
-                                <SmartToy
-                                    sx={{
-                                        fontSize: 80
-                                    }}
-                                />
-                            </Avatar>
-
-                        </Stack>
-
-                    </CardContent>
-
-                </Card>
-                <Typography
-                    variant="h4"
-                    fontWeight="bold"
-                    color="white"
-                    mb={3}
-                >
-                    Quick Access
-                </Typography>
-
-                <Grid container spacing={3}>
-
-                    {featureCards.map((item, index) => (
-
-                        <Grid
-                            item
-                            xs={12}
-                            md={6}
-                            lg={3}
-                            key={index}
-                        >
-
-                            <motion.div
-                                whileHover={{
-                                    scale: 1.04,
-                                    y: -8
-                                }}
-                            >
-
-                                <Card
-                                    onClick={() => navigate(item.route)}
-                                    sx={{
-                                        cursor: "pointer",
-                                        borderRadius: 5,
-                                        color: "white",
-                                        background: `linear-gradient(135deg,${item.color},#1E293B)`,
-                                        transition: ".3s",
-                                        height: 220,
+                                        mt: 3,
+                                        px: 2.5,
+                                        py: 1.3,
+                                        borderRadius: "10px",
+                                        bgcolor: "#8B7CFF",
+                                        color: "#101225",
+                                        textTransform: "none",
+                                        fontWeight: 800,
+                                        boxShadow: "none",
                                         "&:hover": {
-                                            boxShadow: `0 20px 45px ${item.color}66`
+                                            bgcolor: "#A99AFF",
+                                            boxShadow: "none"
                                         }
                                     }}
                                 >
+                                    Start practicing
+                                </Button>
+                            </Grid>
 
+                            <Grid item xs={12} md={4}>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        justifyContent: {
+                                            xs: "flex-start",
+                                            md: "center"
+                                        },
+                                        mt: { xs: 1, md: 0 }
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            width: 150,
+                                            height: 150,
+                                            display: "grid",
+                                            placeItems: "center",
+                                            borderRadius: "32px",
+                                            background:
+                                                "linear-gradient(145deg, #373064, #242747)",
+                                            border: "1px solid #514980",
+                                            boxShadow:
+                                                "0 20px 50px rgba(0,0,0,.2)"
+                                        }}
+                                    >
+                                        <SmartToy
+                                            sx={{
+                                                fontSize: 84,
+                                                color: "#B9ADFF"
+                                            }}
+                                        />
+                                    </Box>
+                                </Box>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </motion.div>
+
+                {/* Workspace heading */}
+                <Stack
+                    direction={{ xs: "column", sm: "row" }}
+                    justifyContent="space-between"
+                    alignItems={{ xs: "flex-start", sm: "flex-end" }}
+                    spacing={1}
+                    sx={{ mb: 2.5 }}
+                >
+                    <Box>
+                        <Typography
+                            sx={{
+                                fontSize: 23,
+                                fontWeight: 800,
+                                letterSpacing: "-.6px"
+                            }}
+                        >
+                            Your learning workspace
+                        </Typography>
+
+                        <Typography
+                            sx={{
+                                ...mutedText,
+                                mt: 0.7,
+                                fontSize: 13
+                            }}
+                        >
+                            Choose where you want to make progress today.
+                        </Typography>
+                    </Box>
+
+                    <Typography
+                        sx={{
+                            ...mutedText,
+                            fontSize: 12,
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 0.7
+                        }}
+                    >
+                        <TrackChanges sx={{ fontSize: 17 }} />
+                        Pick a path and get started
+                    </Typography>
+                </Stack>
+
+                {/* Feature cards */}
+                <Grid container spacing={2.2}>
+                    {featureCards.map((item, index) => (
+                        <Grid
+                            item
+                            xs={12}
+                            sm={6}
+                            lg={3}
+                            key={item.title}
+                        >
+                            <motion.div
+                                initial={{ opacity: 0, y: 16 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{
+                                    duration: 0.35,
+                                    delay: index * 0.08
+                                }}
+                                whileHover={{ y: -5 }}
+                                style={{ height: "100%" }}
+                            >
+                                <Card
+                                    onClick={() => navigate(item.route)}
+                                    sx={{
+                                        ...cardStyle,
+                                        height: "100%",
+                                        minHeight: 235,
+                                        cursor: "pointer",
+                                        transition:
+                                            "border-color .2s, background .2s",
+                                        "&:hover": {
+                                            borderColor: item.color,
+                                            background: "#172036"
+                                        }
+                                    }}
+                                >
                                     <CardContent
                                         sx={{
+                                            p: 2.7,
                                             height: "100%",
                                             display: "flex",
                                             flexDirection: "column",
-                                            justifyContent: "space-between",
-                                            alignItems: "center",
-                                            textAlign: "center"
+                                            alignItems: "flex-start",
+                                            "&:last-child": {
+                                                pb: 2.7
+                                            }
                                         }}
                                     >
-
-                                        <Box>
+                                        <Box
+                                            sx={{
+                                                width: 47,
+                                                height: 47,
+                                                display: "grid",
+                                                placeItems: "center",
+                                                borderRadius: "14px",
+                                                color: item.color,
+                                                bgcolor: `${item.color}18`,
+                                                border: `1px solid ${item.color}40`,
+                                                mb: 2.5,
+                                                "& svg": {
+                                                    fontSize: 24
+                                                }
+                                            }}
+                                        >
                                             {item.icon}
                                         </Box>
 
                                         <Typography
-                                            variant="h6"
-                                            fontWeight="bold"
+                                            sx={{
+                                                fontWeight: 800,
+                                                fontSize: 17,
+                                                mb: 0.8
+                                            }}
                                         >
                                             {item.title}
                                         </Typography>
 
                                         <Typography
                                             sx={{
-                                                opacity: .85
+                                                ...mutedText,
+                                                fontSize: 12.5,
+                                                lineHeight: 1.8,
+                                                minHeight: 44
                                             }}
                                         >
                                             {item.desc}
                                         </Typography>
 
-                                        <Button
-                                            variant="contained"
-                                            endIcon={<ArrowOutward />}
+                                        <Divider
                                             sx={{
-                                                mt: 2,
-                                                background: "white",
-                                                color: item.color,
-                                                fontWeight: "bold",
-                                                textTransform: "none",
-                                                borderRadius: 3,
-                                                "&:hover": {
-                                                    background: "#F8FAFC"
-                                                }
+                                                width: "100%",
+                                                my: 2,
+                                                borderColor: "#273149"
+                                            }}
+                                        />
+
+                                        <Stack
+                                            direction="row"
+                                            alignItems="center"
+                                            justifyContent="space-between"
+                                            sx={{
+                                                width: "100%",
+                                                mt: "auto"
                                             }}
                                         >
-                                            Open
-                                        </Button>
+                                            <Typography
+                                                sx={{
+                                                    color: item.color,
+                                                    fontSize: 9,
+                                                    fontWeight: 800,
+                                                    letterSpacing: ".8px"
+                                                }}
+                                            >
+                                                {item.detail}
+                                            </Typography>
 
+                                            <ArrowOutward
+                                                sx={{
+                                                    fontSize: 18,
+                                                    color: item.color
+                                                }}
+                                            />
+                                        </Stack>
                                     </CardContent>
-
                                 </Card>
-
                             </motion.div>
-
                         </Grid>
-
                     ))}
-
                 </Grid>
-                <Box mt={5}>
 
-                    <Card
-                        sx={{
-                            borderRadius: 5,
-                            background:
-                                "linear-gradient(135deg,#2563EB,#7C3AED)",
-                            color: "white"
-                        }}
-                    >
-
-                        <CardContent>
-
-                            <Typography
-                                variant="h5"
-                                fontWeight="bold"
-                            >
-                                AI Tip
-                            </Typography>
-
-                            <Typography
-                                mt={2}
+                {/* Learning tip */}
+                <Card
+                    sx={{
+                        ...cardStyle,
+                        mt: 4,
+                        background:
+                            "linear-gradient(110deg, #151D32, #171B35)"
+                    }}
+                >
+                    <CardContent sx={{ p: { xs: 2.5, md: 3 } }}>
+                        <Stack
+                            direction={{ xs: "column", sm: "row" }}
+                            spacing={2}
+                            alignItems={{
+                                xs: "flex-start",
+                                sm: "center"
+                            }}
+                        >
+                            <Avatar
+                                variant="rounded"
                                 sx={{
-                                    opacity: .9,
-                                    lineHeight: 1.8
+                                    width: 45,
+                                    height: 45,
+                                    borderRadius: "13px",
+                                    bgcolor: "#2A254E",
+                                    color: "#B9ADFF"
                                 }}
                             >
-                                Practice one coding problem every day.
-                                Focus on understanding the logic instead
-                                of memorizing solutions. Consistency and
-                                problem-solving skills will help you crack
-                                coding interviews faster.
-                            </Typography>
+                                <Psychology />
+                            </Avatar>
 
-                        </CardContent>
+                            <Box>
+                                <Typography
+                                    sx={{
+                                        fontWeight: 800,
+                                        fontSize: 15,
+                                        mb: 0.7
+                                    }}
+                                >
+                                    A little advice for today
+                                </Typography>
 
-                    </Card>
+                                <Typography
+                                    sx={{
+                                        ...mutedText,
+                                        fontSize: 13,
+                                        lineHeight: 1.9
+                                    }}
+                                >
+                                    Focus on understanding the logic behind a
+                                    solution instead of memorizing code.
+                                    Consistent practice builds stronger
+                                    problem-solving skills over time.
+                                </Typography>
+                            </Box>
+                        </Stack>
+                    </CardContent>
+                </Card>
 
-                </Box>
+                <Typography
+                    sx={{
+                        ...mutedText,
+                        textAlign: "center",
+                        fontSize: 11,
+                        mt: 4
+                    }}
+                >
+                    AI Coding Mentor · Learn, practice, and grow.
+                </Typography>
+            </Box>
+        </Box>
+    );
+}
 
-                </motion.div>
-
-                </Box>
-
-                );
-
-                }
-
-                export default Dashboard;
+export default Dashboard;
